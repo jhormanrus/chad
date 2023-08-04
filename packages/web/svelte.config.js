@@ -1,4 +1,5 @@
 import adapter from "@bun-community/sveltekit-adapter-bun";
+import adapter_auto from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -8,9 +9,11 @@ const config = {
   preprocess: vitePreprocess(),
 
   kit: {
-    adapter: adapter({
-      dynamic_origin: true,
-    }),
+    adapter: process.env.VERCEL_ENV === 'production'
+      ? adapter_auto()
+      : adapter({
+        dynamic_origin: true,
+      })
   },
 };
 
